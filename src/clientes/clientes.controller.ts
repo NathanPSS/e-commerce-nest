@@ -9,8 +9,10 @@ import { CacheNormalizeService } from 'src/cache/cache-normalize/cache-normalize
 import { LocalClienteAuthGuard } from './auth/guards/local.guard';
 import { CheckClienteAuthenticationGuard } from './auth/guards/check-authencation.guard';
 import { CreateProdutoCacheDto } from 'src/produtos/dto/create-produto-cache.dto';
+import { ApiTags } from '@nestjs/swagger';
 
 
+@ApiTags('Clientes')
 @Controller('clientes')
 export class ClientesController {
   constructor(

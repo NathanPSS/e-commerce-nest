@@ -5,7 +5,6 @@ import { ProdutosModule } from './produtos/produtos.module';
 import { ClientsModule } from './clients/clients.module';
 import { ConfigModule } from '@nestjs/config';
 import { HashModule } from './hash/hash.module';
-import { ArchivesController } from './archives-router/archives-controller';
 import { CacheModuleLocal } from './cache/cache.module';
 import { AuthClientesModule } from './clientes/auth/authClientes.module';
 import { AdminModule } from './admin/admin.module';
@@ -32,7 +31,7 @@ import { AuthAdminModule } from './admin/auth-admin/auth-admin.module';
   AuthAdminModule,
   AdminModule,
 ],
-  controllers: [ArchivesController],
+  controllers: [],
   providers: [],
 })
 export class AppModule {}

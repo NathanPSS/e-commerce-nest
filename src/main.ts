@@ -5,7 +5,8 @@ import * as session from 'express-session'
 import * as passport from 'passport'
 import { NestExpressApplication } from '@nestjs/platform-express';
 import { join } from 'path'
-import { env } from 'process';
+import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
+
 
 
 async function bootstrap() {
@@ -24,6 +25,19 @@ async function bootstrap() {
       
     },
   }))
+
+  const config = new DocumentBuilder()
+    .setTitle('E-Commerce')
+    .setDescription(
+      'E-Commerce feito para projeto final da disciplina de PW1'
+    )
+    .setVersion('1.0')
+    .addTag('Clientes')
+    .addTag('Pedidos')
+    .build();
+
+  const document = SwaggerModule.createDocument(app, config);
+  SwaggerModule.setup('docs', app, document);
   app.use(passport.initialize())
   app.use(passport.session())
   app.useStaticAssets(join(__dirname, '..', 'public'));
