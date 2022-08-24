@@ -1,0 +1,64 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+model cliente {
+  id Int @default(autoincrement()) @unique
+  email String @unique @id
+  telefone String? 
+  nome String
+  password String
+  createdAt DateTime @default(now())
+  updateAt DateTime @updatedAt
+  pedido pedido[]
+
+}
+model produto {
+  codigo String @id 
+  quantidade Int 
+  nome String
+  preco Float
+  createdAt DateTime @default(now())
+  updateAt DateTime @updatedAt
+  pedido produtos_em_pedidos[]
+}
+model pedido {
+  id Int @id 
+  clientID Int
+  createdAt DateTime @default(now())
+  updateAt DateTime @updatedAt
+  total Float
+  produtos produtos_em_pedidos[]
+  status Status @default(RECEBIDO)
+  cliente cliente @relation(fields: [clientID], references: [id],onDelete: Cascade)
+}
+enum Status {
+  RECEBIDO
+  ANDAMENTO
+  ENTREGUE
+  FINALIZADO
+}
+model produtos_em_pedidos {
+ produto produto @relation(fields: [id_produto], references: [codigo])
+ id_produto String 
+ pedido pedido @relation(fields: [id_pedido],references: [id])
+ id_pedido Int
+ @@id([id_pedido,id_produto])
+}
+model admin {
+  id Int @default(autoincrement()) @unique
+  nome String 
+  username String @id
+  password String
+  endereco String
+  telefone String
+  createdAt DateTime @default(now())
+  updateAt DateTime @updatedAt
+}
