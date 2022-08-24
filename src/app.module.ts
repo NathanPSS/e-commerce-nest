@@ -9,6 +9,7 @@ import { CacheModuleLocal } from './cache/cache.module';
 import { AuthClientesModule } from './clientes/auth/authClientes.module';
 import { AdminModule } from './admin/admin.module';
 import { AuthAdminModule } from './admin/auth-admin/auth-admin.module';
+import { HomeController } from './home.controller';
 
 
 
@@ -31,7 +32,7 @@ import { AuthAdminModule } from './admin/auth-admin/auth-admin.module';
   AuthAdminModule,
   AdminModule,
 ],
-  controllers: [],
+  controllers: [HomeController],
   providers: [],
 })
 export class AppModule {}

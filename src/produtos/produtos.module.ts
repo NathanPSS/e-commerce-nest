@@ -9,6 +9,6 @@ import ValidateProduto from './validators/ValidateProduto.service';
   imports: [ClientsModule,ExceptionsModule],
   controllers: [ProdutosController],
   providers: [ProdutosService,ValidateProduto],
-  exports: [ValidateProduto]
+  exports: [ValidateProduto,ProdutosService]
 })
 export class ProdutosModule {}

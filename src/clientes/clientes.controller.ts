@@ -9,7 +9,7 @@ import { CacheNormalizeService } from 'src/cache/cache-normalize/cache-normalize
 import { LocalClienteAuthGuard } from './auth/guards/local.guard';
 import { CheckClienteAuthenticationGuard } from './auth/guards/check-authencation.guard';
 import { CreateProdutoCacheDto } from 'src/produtos/dto/create-produto-cache.dto';
-import { ApiTags } from '@nestjs/swagger';
+import { ApiCreatedResponse, ApiProperty, ApiTags } from '@nestjs/swagger';
 
 
 @ApiTags('Clientes')
@@ -36,21 +36,33 @@ export class ClientesController {
     return this.clientesService.update(+id, updateClienteDto);
   }
   @UseGuards(CheckClienteAuthenticationGuard)
+  @ApiCreatedResponse({
+    description: 'Pega pega o id do cliente contido na request e o remove do banco'
+  })
   @Delete()
   remove(@Req() req:any) {
     const id = req.user.cliente
     return this.clientesService.remove(+id);
   }
+  @ApiCreatedResponse({
+    description: 'Lista os Pedidos dos Clientes'
+  })
   @UseGuards(CheckClienteAuthenticationGuard)
   @Get('/pedidos')
   pedidos(@Req() req:any){
    return this.pedidosService.findAllById(req.user.cliente)
   }
+  @ApiCreatedResponse({
+    description: 'Adiciona produtos ao Cache da Aplicação'
+  })
   @UseGuards(CheckClienteAuthenticationGuard)
   @Post('/pedidos')
   pedidosCache(@Body() createProdutoDto :CreateProdutoCacheDto,@Req() req:any){
    return this.pedidosService.createCache(req.user.cliente, createProdutoDto)
   }
+  @ApiCreatedResponse({
+    description: 'Pega o cache e salva no Postgree'
+  })
   @UseGuards(CheckClienteAuthenticationGuard)
   @Get('pedidos/fazer_pedidos')
   fazerPedidos(@Req() req:any){

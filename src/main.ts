@@ -33,7 +33,8 @@ async function bootstrap() {
     )
     .setVersion('1.0')
     .addTag('Clientes')
-    .addTag('Pedidos')
+    .addTag('Admin')
+    .addTag('Home')
     .build();
 
   const document = SwaggerModule.createDocument(app, config);

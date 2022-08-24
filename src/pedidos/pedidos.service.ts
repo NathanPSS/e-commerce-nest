@@ -8,8 +8,7 @@ import { ExceptionService } from 'src/exceptions/bad-request-exception/exception
 import { CreateProdutoCacheDto } from 'src/produtos/dto/create-produto-cache.dto';
 import { CreateProdutoDto } from 'src/produtos/dto/create-produto.dto';
 import ValidateProduto from 'src/produtos/validators/ValidateProduto.service';
-import { CreatePedidoDto } from './dto/create-pedido.dto';
-import { UpdatePedidoDto } from './dto/update-pedido.dto';
+
 
 @Injectable()
 export class PedidosService {
@@ -61,9 +60,6 @@ export class PedidosService {
     })} catch(error){
     } 
   }
-  async create(createPedidoDto :CreatePedidoDto){
-
-  }
  async createCache(id :string, produto :CreateProdutoCacheDto){
   try{
    await this.validateProduto.validate(produto.codigo)
@@ -107,10 +103,6 @@ export class PedidosService {
   }
   findOne(id: number) {
     return `This action returns a #${id} pedido`;
-  }
-
-  update(id: number, updatePedidoDto: UpdatePedidoDto) {
-    return `This action updates a #${id} pedido`;
   }
 
   remove(id: number) {
