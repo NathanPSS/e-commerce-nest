@@ -1,5 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { Prisma } from '@prisma/client';
+import { CacheDelService } from 'src/cache/cache-del/cache-del.service';
 import { CacheGetService } from 'src/cache/cache-get/cache-get.service';
 import { CacheNormalizeService } from 'src/cache/cache-normalize/cache-normalize.service';
 import { CacheSetService } from 'src/cache/cache-set/cache-set.service';
@@ -17,6 +18,7 @@ export class PedidosService {
     private readonly cacheSet : CacheSetService,
     private readonly cacheGet : CacheGetService,
     private readonly cacheNormalize :CacheNormalizeService,
+    private readonly cacheDelete :CacheDelService,
     private readonly validateProduto: ValidateProduto,
     private readonly execptions :ExceptionService,
   ){}
@@ -56,7 +58,7 @@ export class PedidosService {
           id_produto: produto.codigo
         }
       })
-
+      await this.cacheDelete.del(id)
     })} catch(error){
     } 
   }
@@ -64,7 +66,6 @@ export class PedidosService {
   try{
    await this.validateProduto.validate(produto.codigo)
    const produtoString = JSON.stringify(produto)
-   console.log(id,produto)
    await this.cacheSet.set(id,produtoString)
   }catch (error){
     return this.execptions.throwNotFoundException('','Produto não encontrado')
@@ -105,7 +106,19 @@ export class PedidosService {
     return `This action returns a #${id} pedido`;
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} pedido`;
+  async remove(id: string) {
+    try{
+    const idNumber = parseInt(id)
+    const removedPedido = await this.BD.pedido.delete({
+    where:{
+      id:idNumber
+    }
+    })
+    return removedPedido
+  } catch(error) {
+    if(error === 'P2001'){
+      this.execptions.throwNotFoundException('','Pedido não encontrado')
+    }
   }
+}
 }

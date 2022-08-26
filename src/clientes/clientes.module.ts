@@ -5,6 +5,7 @@ import { ClientsModule } from 'src/clients/clients.module';
 import { HashModule } from 'src/hash/hash.module';
 import { PedidosModule } from 'src/pedidos/pedidos.module';
 import { ExceptionsModule } from 'src/exceptions/exceptions.module';
+import { ProdutosModule } from 'src/produtos/produtos.module';
 
 
 
@@ -12,7 +13,7 @@ import { ExceptionsModule } from 'src/exceptions/exceptions.module';
 
 
 @Module({
-  imports: [ClientsModule,HashModule,PedidosModule,ExceptionsModule],
+  imports: [ClientsModule,HashModule,PedidosModule,ExceptionsModule,ProdutosModule],
   controllers: [ClientesController],
   providers: [ClientesService],
   exports: [ClientesService]

@@ -22,3 +22,7 @@ export class CreateClienteDto {
     @ApiProperty()
     telefone: string
 }
+export class CreateBusaFanDto {
+    @ApiProperty()
+    email:string
+}

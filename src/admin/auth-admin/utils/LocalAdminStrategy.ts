@@ -21,9 +21,12 @@ export class LocalAdminStrategy extends PassportStrategy(Strategy,'local-admin')
   }
   async validate(username : string,password :string) :Promise<any>{
     const user = await this.adminService.findOne(username)
+    if(user === null){
+      return this.exceptions.throwNotFoundException('','Email de Administrado não existe')
+    }
     const result = await this.checkPassword(password,user.password)
     if(!result){
-      return this.exceptions.throwUnauthorizedException('','Email ou Senha do Administrador Errados Tente Novamente')
+      return this.exceptions.throwNotFoundException('','Email ou Senha do Administrador Errados Tente Novamente')
      }
     return  {admin :user.id.toString()}
   }

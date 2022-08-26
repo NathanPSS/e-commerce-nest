@@ -1,4 +1,4 @@
-import { Module, ValidationPipe } from '@nestjs/common';
+import { MiddlewareConsumer, Module, NestModule, ValidationPipe } from '@nestjs/common';
 import { PedidosModule } from './pedidos/pedidos.module';
 import { ClientesModule } from './clientes/clientes.module';
 import { ProdutosModule } from './produtos/produtos.module';
@@ -35,4 +35,6 @@ import { HomeController } from './home.controller';
   controllers: [HomeController],
   providers: [],
 })
-export class AppModule {}
+export class AppModule{
+
+}

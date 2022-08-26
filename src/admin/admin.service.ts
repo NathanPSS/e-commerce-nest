@@ -40,7 +40,18 @@ export class AdminService {
       this.execptions.throwNotFoundException('','Administrador não encontrado')
   }
   }
-
+  async findOneById(id: number) :Promise<AdminBD>{
+    try{
+     const admin :AdminBD = await this.BD.admin.findUniqueOrThrow({
+      where:{
+          id: id
+      }
+     }) 
+     return admin
+    }catch(error) {
+        this.execptions.throwNotFoundException('','Administrador não encontrado')
+    }
+    }
  async update(id: number, updateAdminDto: UpdateAdminDto) :Promise<AdminBD>{
   if(updateAdminDto.password !== undefined){
     updateAdminDto.password = await this.encrypt.hashData(updateAdminDto.password,10)

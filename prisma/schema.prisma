@@ -25,6 +25,8 @@ model produto {
   quantidade Int 
   nome String
   preco Float
+  descricao String
+  tipo String
   createdAt DateTime @default(now())
   updateAt DateTime @updatedAt
   pedido produtos_em_pedidos[]
@@ -46,9 +48,9 @@ enum Status {
   FINALIZADO
 }
 model produtos_em_pedidos {
- produto produto @relation(fields: [id_produto], references: [codigo])
+ produto produto @relation(fields: [id_produto], references: [codigo],onDelete: Cascade)
  id_produto String 
- pedido pedido @relation(fields: [id_pedido],references: [id])
+ pedido pedido @relation(fields: [id_pedido],references: [id],onDelete: Cascade)
  id_pedido Int
  @@id([id_pedido,id_produto])
 }

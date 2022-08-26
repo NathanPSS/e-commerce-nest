@@ -1,12 +1,19 @@
 import { PartialType } from '@nestjs/mapped-types';
 import { ApiProperty } from '@nestjs/swagger';
+import { IsNumberString, IsString } from 'class-validator';
 import { CreateProdutoDto } from './create-produto.dto';
 
-export class UpdateProdutoDto extends PartialType(CreateProdutoDto) {
+export class UpdateProdutoDto {
     @ApiProperty()
-    nome?: string;
+    @IsNumberString()
+    codigo:string
     @ApiProperty()
-    quantidade?: number;
+    @IsString()
+    nome: string;
     @ApiProperty()
-    preco?: number;
+    @IsNumberString()
+    quantidade: string;
+    @IsNumberString()
+    @ApiProperty()
+    preco: string;
 }

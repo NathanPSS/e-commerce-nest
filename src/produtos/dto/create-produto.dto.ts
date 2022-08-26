@@ -15,12 +15,21 @@ export class CreateProdutoDto {
     nome: string
     
     @IsNotEmpty()
-    @IsNumber()
+    @IsNumberString()
     @ApiProperty()
-    quantidade: number
+    quantidade: string
     
-    @IsNumber({maxDecimalPlaces: 2})
+    @IsNumberString()
     @IsNotEmpty()
     @ApiProperty()
-    preco: number
+    preco: string
+    
+
+    @IsNotEmpty()
+    @IsString()
+    descricao:string
+
+    @IsNotEmpty()
+    @IsString()
+    tipo: string
 }

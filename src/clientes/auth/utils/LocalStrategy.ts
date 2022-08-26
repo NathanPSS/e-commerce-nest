@@ -1,5 +1,6 @@
 import { Injectable } from "@nestjs/common";
 import { PassportStrategy } from "@nestjs/passport";
+import { NextFunction } from "express";
 
 import { Strategy } from "passport-local";
 import { ClientesService } from "src/clientes/clientes.service";
@@ -20,17 +21,15 @@ export class LocalClienteStrategy extends PassportStrategy(Strategy,'local-clien
   }
   async validate(username : string,password :string) :Promise<any>{
     // Sem DTO no parametro pois a função precisa obrigatoriamente dos parametros username e password
-    const dto : LoginClienteDto = {
-      email: username,
-      password: password
+    const user = await this.clientsService.findOneByEmail(username)
+    if(user === null){
+      return this.exceptions.throwNotFoundException('','Email não cadastrado')
     }
-    const user = await this.clientsService.findOne(dto.email)
-    const result = await this.checkPassword(dto.password,user.password)
+    const result = await this.checkPassword(password,user.password)
     if(!result){
-      return this.exceptions.throwUnauthorizedException('','Usuario ou Senha Errados')
+      return this.exceptions.throwNotFoundException('','Usuario ou Senha Errados')
      }
-    
-    return  {cliente :user.id.toString()}
+    return  {cliente :user.id}
   }
   private async checkPassword(passsword :string, hash :string) :Promise<boolean>{
       const result = await this.hash.compareHash(passsword,hash)

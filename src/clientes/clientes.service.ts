@@ -13,12 +13,13 @@ export class ClientesService {
   constructor(
     private BD : PostgreSqlService,
     private encrypt : HashDataService,
+    private execeptions :ExceptionService
   ){}
   async create(createClienteDto: CreateClienteDto) :Promise<IClientBD>{
    const {email,nome,password,telefone} = createClienteDto
    
    const hashedPassword = await this.encrypt.hashData(password,10)
-
+try{
    const userCreated : IClientBD= await this.BD.cliente.create({
       data: {
         email: email,
@@ -28,6 +29,11 @@ export class ClientesService {
       }
     })
     return userCreated
+  } catch (error){
+    if(error.code == 'P2002'){
+      this.execeptions.throwForbiddenException('Email já cadastrado')
+    }
+  } 
   }
 
  async findAll() :Promise<IClientBD[]>{
@@ -36,7 +42,17 @@ export class ClientesService {
     return users
   }
 
-  async findOne(email: string) :Promise<IClientBD | null>{
+  async findOneById(id :number) :Promise<IClientBD | null>{
+    const user :IClientBD = await this.BD.cliente.findUnique({
+      where:{
+        id: id
+      }
+    })
+    return user
+  }
+  
+  async findOneByEmail(email :string) :Promise<IClientBD | null>{
+    
     const user :IClientBD = await this.BD.cliente.findUnique({
       where:{
         email: email

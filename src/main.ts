@@ -4,8 +4,8 @@ import { AppModule } from './app.module';
 import * as session from 'express-session'
 import * as passport from 'passport'
 import { NestExpressApplication } from '@nestjs/platform-express';
-import { join } from 'path'
 import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
+import { join } from 'path';
 
 
 
@@ -29,12 +29,14 @@ async function bootstrap() {
   const config = new DocumentBuilder()
     .setTitle('E-Commerce')
     .setDescription(
-      'E-Commerce feito para projeto final da disciplina de PW1'
+      'E-Commerce feito para projeto final da disciplina de PW1 *OBS as rotas protegidas so serão acessiveis mediante autenticação de suas devidas rotas de login não tentar pelo swagger'
     )
     .setVersion('1.0')
     .addTag('Clientes')
     .addTag('Admin')
+    .addTag('Admin-Produtos')
     .addTag('Home')
+    .addBasicAuth({type: 'http',scheme: 'basic'},'basic')
     .build();
 
   const document = SwaggerModule.createDocument(app, config);
