@@ -26,8 +26,8 @@ export class ProdutosController {
   @ApiResponse({status: 401,description:'O administrador não estar logado', type: UnauthorizedRequestSwagger})
   @Post()
   @Redirect('http://localhost:3000/admin/produtos')
-  create(@Body() createProdutoDto: CreateProdutoDto) {
-    return this.produtosService.create(createProdutoDto);
+  async create(@Body() createProdutoDto: CreateProdutoDto) {
+    return await this.produtosService.createByApp(createProdutoDto);
      
   }
   @ApiOperation({summary: 'Rendeniza o Dashboard do Admin'})

@@ -52,6 +52,7 @@ model produtos_em_pedidos {
  id_produto String 
  pedido pedido @relation(fields: [id_pedido],references: [id],onDelete: Cascade)
  id_pedido Int
+ quantidadeEmPedido Int
  @@id([id_pedido,id_produto])
 }
 model admin {

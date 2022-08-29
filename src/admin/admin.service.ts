@@ -23,7 +23,6 @@ export class AdminService {
     })
     return admin
   }
-@UseGuards(CheckAdminAuthenticationGuard)
   findAll() {
     return `This action returns all admin`;
   }

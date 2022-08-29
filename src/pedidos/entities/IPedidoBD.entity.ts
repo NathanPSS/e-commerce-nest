@@ -1,5 +1,7 @@
 import { ApiProperty } from "@nestjs/swagger"
+import { CreateProdutoCacheDto } from "src/produtos/dto/create-produto-cache.dto"
 import { ProdutoBD } from "src/produtos/entities/IProduto.entity"
+import { ProdutosEmPedidos } from "./ProdutosEmPedido"
 
 export class IPedidoBD {
     @ApiProperty()
@@ -10,6 +12,6 @@ export class IPedidoBD {
     createdAt: Date
     @ApiProperty()
     updateAt: Date
-    @ApiProperty()
-    produtos: Array<{}>
+    @ApiProperty({type: ProdutosEmPedidos,isArray: true})
+    produtos: Array<ProdutosEmPedidos>
 }

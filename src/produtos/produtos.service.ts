@@ -3,7 +3,9 @@ import { CacheGetService } from 'src/cache/cache-get/cache-get.service';
 import { CacheNormalizeService } from 'src/cache/cache-normalize/cache-normalize.service';
 import { PostgreSqlService } from 'src/clients/postgree-service/postgree-service.service';
 import { ExceptionService } from 'src/exceptions/bad-request-exception/exception.service';
+import { CreateProdutoApiDto } from './dto/create-api-produto.dto';
 import { CreateProdutoDto } from './dto/create-produto.dto';
+import { UpdateApiProdutoDto } from './dto/update-api-produto.dto';
 import { UpdateProdutoDto } from './dto/update-produto.dto';
 import { ProdutoBD } from './entities/IProduto.entity';
 
@@ -15,7 +17,7 @@ export class ProdutosService {
     private readonly cacheGet :CacheGetService,
     private readonly cacheNormalize :CacheNormalizeService
   ){}
-  async create(createProdutoDto: CreateProdutoDto) :Promise<ProdutoBD>{
+  async createByApp(createProdutoDto: CreateProdutoDto) :Promise<ProdutoBD>{
     const quantidade = parseInt(createProdutoDto.quantidade)
     const preco = parseFloat(createProdutoDto.preco)
     const produto :ProdutoBD= await this.BD.produto.create({
@@ -30,7 +32,18 @@ export class ProdutosService {
     })
     return produto
   }
-
+  async createByAPI(creteProdutoApi :CreateProdutoApiDto) :Promise<ProdutoBD>{
+    try{
+    const produto = await this.BD.produto.create({
+      data:creteProdutoApi
+    })
+    return produto
+  }catch (error) {
+    if(error.code === 'P2002'){
+      this.execptions.throwForbiddenException('','Produto ja cadastrado')
+    }
+  }
+  }
  async findAll() :Promise<Array<ProdutoBD>>{
     const produtos :Array<ProdutoBD> = await this.BD.produto.findMany()
     return produtos
@@ -61,16 +74,23 @@ export class ProdutosService {
     )
     return produtoAtualizado
   }
-
- async remove(codigo: string) :Promise<string>{
+async updateByApi(codigo :string, updateProdutoDto :UpdateApiProdutoDto) :Promise<ProdutoBD>{
+  const produto = await this.BD.produto.update({
+    where:{
+      codigo: codigo
+    },
+    data:updateProdutoDto
+  })
+  return produto
+}
+ async remove(codigo: string) :Promise<ProdutoBD>{
     try {
      const produtoRemovido = await this.BD.produto.delete({
         where:{
           codigo:codigo
         }
       })
-      const message = `O produto com codigo ${produtoRemovido.codigo} foi removido`
-      return message
+      return produtoRemovido
     } catch (error) {
       if(error.code === 'P2003'){
         this.execptions.throwForbiddenException('','Produto não pode ser Excluido pois pertece a pedidos abertos')

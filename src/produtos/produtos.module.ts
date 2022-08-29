@@ -6,10 +6,11 @@ import { ExceptionsModule } from 'src/exceptions/exceptions.module';
 import ValidateProduto from './validators/ValidateProduto.service';
 import { CacheModuleLocal } from 'src/cache/cache.module';
 import { AdminModule } from 'src/admin/admin.module';
+import { ApiProdutosController } from './controller/api-produtos/api-produtos.controller';
 
 @Module({
   imports: [ClientsModule,ExceptionsModule,CacheModuleLocal,AdminModule],
-  controllers: [ProdutosController],
+  controllers: [ProdutosController, ApiProdutosController],
   providers: [ProdutosService,ValidateProduto],
   exports: [ValidateProduto,ProdutosService]
 })

@@ -32,10 +32,13 @@ async function bootstrap() {
       'E-Commerce feito para projeto final da disciplina de PW1 *OBS as rotas protegidas so serão acessiveis mediante autenticação de suas devidas rotas de login não tentar pelo swagger'
     )
     .setVersion('1.0')
+    .addTag('Api-Clientes')
     .addTag('Clientes')
     .addTag('Admin')
     .addTag('Admin-Produtos')
+    .addTag('Api-Produtos')
     .addTag('Home')
+    .addTag('Api-Pedidos')
     .addBasicAuth({type: 'http',scheme: 'basic'},'basic')
     .build();
 

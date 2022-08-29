@@ -25,6 +25,7 @@ export class CreateProdutoDto {
     preco: string
     
 
+
     @IsNotEmpty()
     @IsString()
     descricao:string

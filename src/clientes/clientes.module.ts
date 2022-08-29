@@ -6,6 +6,7 @@ import { HashModule } from 'src/hash/hash.module';
 import { PedidosModule } from 'src/pedidos/pedidos.module';
 import { ExceptionsModule } from 'src/exceptions/exceptions.module';
 import { ProdutosModule } from 'src/produtos/produtos.module';
+import { ApiClientesController } from './controllers/api-clientes/api-clientes.controller';
 
 
 
@@ -14,7 +15,7 @@ import { ProdutosModule } from 'src/produtos/produtos.module';
 
 @Module({
   imports: [ClientsModule,HashModule,PedidosModule,ExceptionsModule,ProdutosModule],
-  controllers: [ClientesController],
+  controllers: [ClientesController, ApiClientesController],
   providers: [ClientesService],
   exports: [ClientesService]
 })

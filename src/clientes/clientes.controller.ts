@@ -74,7 +74,7 @@ export class ClientesController {
   @Get('dashboard')
   async renderDashborad(@Req() req:any,@Res() res:Response){
         const dadosCliente = await this.clientesService.findOneById(req.user.cliente)
-        const pedidosCliente = await this.pedidosService.findAllById(req.user.cliente)
+        const pedidosCliente = await this.pedidosService.findAllByIdCliente(req.user.cliente)
        res.render('dashboard',{dadosCliente: dadosCliente, pedidosCliente: pedidosCliente})
   }
 
