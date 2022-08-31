@@ -14,8 +14,8 @@ Password: postgree
 Crie um novo server clicando com o botão direito na icom server
 
 Name : Postgres
-Host name/addres : e-commerce-postgres-compose-1 caso não funcione procure o nome do container com a porta 5432 e o substitua
-Username: postgres
+Host name/addres : e-commerce-postgres-compose-1 caso não funcione procure o nome do container com a porta 5432 e o substitua  
+Username: postgres  
 Password: 123
 
 ##### Criando as Tabelas
