@@ -1,7 +1,7 @@
 import { Injectable, UseGuards } from '@nestjs/common';
-import { PostgreSqlService } from 'src/clients/postgree-service/postgree-service.service';
-import { ExceptionService } from 'src/exceptions/bad-request-exception/exception.service';
-import { HashDataService } from 'src/hash/hash-data/hash-data.service';
+import { PostgreSqlService } from '../clients/postgree-service/postgree-service.service';
+import { ExceptionService } from '../exceptions/bad-request-exception/exception.service';
+import { HashDataService } from '../hash/hash-data/hash-data.service';
 import { CheckAdminAuthenticationGuard } from './auth-admin/guards/check-admin.guard';
 import { CreateAdminDto } from './dto/create-admin.dto';
 import { UpdateAdminDto } from './dto/update-admin.dto';
@@ -39,7 +39,7 @@ export class AdminService {
       this.execptions.throwNotFoundException('','Administrador não encontrado')
   }
   }
-  async findOneById(id: number) :Promise<AdminBD>{
+  async findOneById(id: number) :Promise<AdminBD | void>{
     try{
      const admin :AdminBD = await this.BD.admin.findUniqueOrThrow({
       where:{

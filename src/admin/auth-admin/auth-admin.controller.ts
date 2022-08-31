@@ -1,7 +1,7 @@
 import { Controller, Get, Post, Redirect, Res, UseGuards } from '@nestjs/common';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { Request, Response } from 'express';
-import { NotFoundSwagger } from 'src/helpers/swagger/NotFoundRequestSwagger';
+import { NotFoundSwagger } from '../../helpers/swagger/NotFoundRequestSwagger';
 import { LocalAdminAuthGuard } from './guards/local-admin.guard';
 
 @ApiTags('Admin')

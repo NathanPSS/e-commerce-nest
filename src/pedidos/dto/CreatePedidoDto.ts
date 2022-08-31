@@ -1,6 +1,6 @@
 import { ApiProperty } from "@nestjs/swagger";
 import { IsArray, IsNotEmpty, IsNumber } from "class-validator";
-import { CreateProdutoCacheDto } from "src/produtos/dto/create-produto-cache.dto";
+import { CreateProdutoCacheDto } from "../../produtos/dto/create-produto-cache.dto";
 
 export class CreatePedidoApiDto {
    

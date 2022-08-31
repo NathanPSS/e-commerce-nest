@@ -1,6 +1,6 @@
 import { CanActivate, ExecutionContext, Injectable } from "@nestjs/common";
 import { AuthGuard } from "@nestjs/passport";
-import { ExceptionService } from "src/exceptions/bad-request-exception/exception.service";
+import { ExceptionService } from "../../../exceptions/bad-request-exception/exception.service";
 
 
 

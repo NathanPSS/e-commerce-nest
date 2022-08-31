@@ -1,6 +1,6 @@
 import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards, Req } from '@nestjs/common';
 import { ApiBasicAuth, ApiCreatedResponse, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
-import { UnauthorizedRequestSwagger } from 'src/helpers/swagger/UnthorizadedSwagger';
+import { UnauthorizedRequestSwagger } from '../helpers/swagger/UnthorizadedSwagger';
 import { AdminService } from './admin.service';
 import { CheckAdminAuthenticationGuard } from './auth-admin/guards/check-admin.guard';
 import { CreateAdminDto } from './dto/create-admin.dto';

@@ -3,15 +3,15 @@ import { prisma, Prisma, } from '@prisma/client';
 import { NotFoundError } from '@prisma/client/runtime';
 import { concatWith } from 'rxjs';
 
-import { CacheDelService } from 'src/cache/cache-del/cache-del.service';
-import { CacheGetService } from 'src/cache/cache-get/cache-get.service';
-import { CacheNormalizeService } from 'src/cache/cache-normalize/cache-normalize.service';
-import { CacheSetService } from 'src/cache/cache-set/cache-set.service';
-import { PostgreSqlService } from 'src/clients/postgree-service/postgree-service.service';
-import { ExceptionService } from 'src/exceptions/bad-request-exception/exception.service';
+import { CacheDelService } from '../cache/cache-del/cache-del.service';
+import { CacheGetService } from '../cache/cache-get/cache-get.service';
+import { CacheNormalizeService } from '../cache/cache-normalize/cache-normalize.service'
+import { CacheSetService } from '../cache/cache-set/cache-set.service'
+import { PostgreSqlService } from '../clients/postgree-service/postgree-service.service'
+import { ExceptionService } from '../exceptions/bad-request-exception/exception.service'
 import { CreateProdutoCacheDto } from 'src/produtos/dto/create-produto-cache.dto';
-import { CreateProdutoDto } from 'src/produtos/dto/create-produto.dto';
-import ValidateProduto from 'src/produtos/validators/ValidateProduto.service';
+
+import ValidateProduto from '../produtos/validators/ValidateProduto.service'
 import { CreatePedidoApiDto } from './dto/CreatePedidoDto';
 import { UpdatePedidoApiDto } from './dto/UpdatePedidoDto';
 
@@ -31,11 +31,14 @@ export class PedidosService {
     try{
     let totalPedido :number = 0
     const cache = await this.cacheGet.get(id)
+    if(!cache){
+      throw new Error
+    }
     const normalizedCache = this.cacheNormalize.cacheStringToObject(cache)
     let element
     for(let i=0;i < normalizedCache.length;i++){
        element = normalizedCache[i]
-       let precoProduto = await this.BD.produto.findUnique({
+       let precoProduto = await this.BD.produto.findUniqueOrThrow({
         select:{
           preco: true
         },
@@ -228,6 +231,7 @@ async updatePedidoByApi(id :number,updatePedidoDto :UpdatePedidoApiDto){
   })
   let totalPedido = 0
   let produtosAtt :Array<object> = []
+  if(updatePedidoDto.produtos !== undefined){
   for(let i = 0; i < updatePedidoDto.produtos.length ; i++){
 
     let produto = await this.BD.produto.findUniqueOrThrow({
@@ -261,6 +265,7 @@ async updatePedidoByApi(id :number,updatePedidoDto :UpdatePedidoApiDto){
   })
   pedidoFinal["produtos"] = produtosAtt
   return pedidoFinal
+}
 } catch(error) {
   if(error instanceof NotFoundError){
     return this.execptions.throwNotFoundException('Produto não encontrado no pedido','Verifique o codigo do produto')

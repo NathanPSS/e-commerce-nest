@@ -4,7 +4,7 @@ import { RedisClient } from '../redis/RedisClient';
 
 @Injectable()
 export class CacheGetService extends RedisClient{
-    async get(key :RedisKey) :Promise<string>{
+    async get(key :RedisKey) :Promise<string | null>{
         const value = await this.client.get(key)
         return value
     }

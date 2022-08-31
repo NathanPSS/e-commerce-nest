@@ -1,17 +1,17 @@
 import { Module } from '@nestjs/common';
 import { ProdutosService } from './produtos.service';
 import { ProdutosController } from './produtos.controller';
-import { ClientsModule } from 'src/clients/clients.module';
-import { ExceptionsModule } from 'src/exceptions/exceptions.module';
+import { ClientesModule } from '../clientes/clientes.module';
+import { ExceptionsModule } from '../exceptions/exceptions.module';
 import ValidateProduto from './validators/ValidateProduto.service';
-import { CacheModuleLocal } from 'src/cache/cache.module';
-import { AdminModule } from 'src/admin/admin.module';
+import { CacheModuleLocal } from '../cache/cache.module';
+import { AdminModule } from '../admin/admin.module';
 import { ApiProdutosController } from './controller/api-produtos/api-produtos.controller';
-
+import { PostgreSqlService } from '../clients/postgree-service/postgree-service.service'
 @Module({
-  imports: [ClientsModule,ExceptionsModule,CacheModuleLocal,AdminModule],
+  imports: [ExceptionsModule,CacheModuleLocal,AdminModule],
   controllers: [ProdutosController, ApiProdutosController],
-  providers: [ProdutosService,ValidateProduto],
+  providers: [ProdutosService,ValidateProduto,PostgreSqlService],
   exports: [ValidateProduto,ProdutosService]
 })
 export class ProdutosModule {}

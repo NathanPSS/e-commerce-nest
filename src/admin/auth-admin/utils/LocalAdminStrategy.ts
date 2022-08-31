@@ -2,11 +2,9 @@ import { Injectable } from "@nestjs/common";
 import { PassportStrategy } from "@nestjs/passport";
 
 import { Strategy } from "passport-local";
-import { AdminService } from "src/admin/admin.service";
-import { ClientesService } from "src/clientes/clientes.service";
-import { LoginClienteDto } from "src/clientes/dto/login-cliente.dto";
-import { ExceptionService } from "src/exceptions/bad-request-exception/exception.service";
-import { CompareHashDataService } from "src/hash/compare-hash-data/compare-hash-data.service";
+import { AdminService } from "../../admin.service";
+import { ExceptionService } from "../../../exceptions/bad-request-exception/exception.service";
+import { CompareHashDataService } from "../../../hash/compare-hash-data/compare-hash-data.service";
 
 
 

@@ -1,23 +1,23 @@
 import { Controller, Get, Post, Body, Patch, Param, Delete, Req, UseGuards, Res, Redirect, Render} from '@nestjs/common';
 import { Request, Response } from 'express';
-import { PedidosService } from 'src/pedidos/pedidos.service';
+import { PedidosService } from '../pedidos/pedidos.service';
 import { ClientesService } from './clientes.service';
 import { CreateClienteDto } from './dto/create-cliente.dto';
 import { UpdateClienteDto } from './dto/update-cliente.dto';
 import { LocalClienteAuthGuard } from './auth/guards/local.guard';
 import { CheckClienteAuthenticationGuard } from './auth/guards/check-authencation.guard';
-import { CreateProdutoCacheDto } from 'src/produtos/dto/create-produto-cache.dto';
+import { CreateProdutoCacheDto } from '../produtos/dto/create-produto-cache.dto';
 import { ApiBasicAuth, ApiCreatedResponse, ApiOkResponse, ApiOperation, ApiProperty, ApiResponse, ApiSecurity, ApiTags } from '@nestjs/swagger';
-import { ProdutosService } from 'src/produtos/produtos.service';
+import { ProdutosService } from '../produtos/produtos.service';
 import { IndexClientBDSwagger } from './swagger/IndexClientBD.swagger';
-import { ForbiddenSwagger } from 'src/helpers/swagger/ForbiddenSwagger';
-import { BadResquestSwagger } from 'src/helpers/swagger/BadResquestSwagger';
+import { ForbiddenSwagger } from '../helpers/swagger/ForbiddenSwagger';
+import { BadResquestSwagger } from '../helpers/swagger/BadResquestSwagger';
 import { LoginClienteDto } from './dto/login-cliente.dto';
-import { UnauthorizedRequestSwagger } from 'src/helpers/swagger/UnthorizadedSwagger';
-import { NotFoundSwagger } from 'src/helpers/swagger/NotFoundRequestSwagger';
+import { UnauthorizedRequestSwagger } from '../helpers/swagger/UnthorizadedSwagger';
+import { NotFoundSwagger } from '../helpers/swagger/NotFoundRequestSwagger';
 import { IClientBD } from './entities/iClientBD.entity';
-import { IPedidoBD } from 'src/pedidos/entities/IPedidoBD.entity';
-import { CodigoPedidoDto } from 'src/pedidos/dto/CodigoPedidoDto';
+import { IPedidoBD } from '../pedidos/entities/IPedidoBD.entity';
+import { CodigoPedidoDto } from '../pedidos/dto/CodigoPedidoDto';
 
 
 

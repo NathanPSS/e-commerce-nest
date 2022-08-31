@@ -1,11 +1,11 @@
 import { Body, Controller, Delete, Get, Param, Patch, Post } from '@nestjs/common';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
-import { NotFoundSwagger } from 'src/helpers/swagger/NotFoundRequestSwagger';
-import { CreateProdutoApiDto } from 'src/produtos/dto/create-api-produto.dto';
+import { NotFoundSwagger } from '../../../helpers/swagger/NotFoundRequestSwagger';
+import { CreateProdutoApiDto } from '../../dto/create-api-produto.dto';
 import { CreateProdutoDto } from 'src/produtos/dto/create-produto.dto';
-import { UpdateApiProdutoDto } from 'src/produtos/dto/update-api-produto.dto';
-import { ProdutoBD } from 'src/produtos/entities/IProduto.entity';
-import { ProdutosService } from 'src/produtos/produtos.service';
+import { UpdateApiProdutoDto } from '../../dto/update-api-produto.dto';
+import { ProdutoBD } from '../../entities/IProduto.entity';
+import { ProdutosService } from '../../produtos.service';
 
 @ApiTags('Api-Produtos')
 @Controller('api/produtos')
@@ -17,7 +17,7 @@ export class ApiProdutosController {
     @ApiOperation({summary: 'Cria um produto'})
     @ApiResponse({status: 201,description:'Produto criado com sucesso'})
     @Post()
-    async create(@Body() createProdutoDto:CreateProdutoApiDto) :Promise<ProdutoBD>{
+    async create(@Body() createProdutoDto:CreateProdutoApiDto) :Promise<ProdutoBD |void>{
      return await this.produtosService.createByAPI(createProdutoDto)
     }
 
@@ -25,7 +25,7 @@ export class ApiProdutosController {
     @ApiResponse({status: 200,description:'O produto foi encontrado com sucesso', type:ProdutoBD})
     @ApiResponse({status:404,description:'O produto não foi encontrado',type: NotFoundSwagger})
     @Get(':codigo')
-    async findByCodigo(@Param('codigo') codigo:string) :Promise<ProdutoBD>{
+    async findByCodigo(@Param('codigo') codigo:string) :Promise<ProdutoBD | void>{
      return await this.produtosService.findOne(codigo)
     }
 

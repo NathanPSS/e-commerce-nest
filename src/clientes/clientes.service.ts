@@ -1,8 +1,7 @@
 import { Injectable } from '@nestjs/common';
-import { PostgreSqlService } from 'src/clients/postgree-service/postgree-service.service';
-import { ExceptionService } from 'src/exceptions/bad-request-exception/exception.service';
-import { CompareHashDataService } from 'src/hash/compare-hash-data/compare-hash-data.service';
-import { HashDataService } from 'src/hash/hash-data/hash-data.service';
+import { PostgreSqlService } from '../clients/postgree-service/postgree-service.service';
+import { ExceptionService } from '../exceptions/bad-request-exception/exception.service'
+import { HashDataService } from '../hash/hash-data/hash-data.service'
 import { CreateClienteDto } from './dto/create-cliente.dto';
 import { UpdateClienteDto } from './dto/update-cliente.dto';
 import { IClientBD } from './entities/iClientBD.entity';
@@ -42,13 +41,18 @@ try{
     return users
   }
 
-  async findOneById(id :number) :Promise<IClientBD | null>{
-    const user :IClientBD = await this.BD.cliente.findUnique({
+  async findOneById(id :number) :Promise<IClientBD | void>{
+    try{
+    const user :IClientBD = await this.BD.cliente.findUniqueOrThrow({
       where:{
         id: id
       }
     })
     return user
+  } catch(error) {
+    console.log(error)
+   return this.execeptions.throwNotFoundException()
+  }
   }
   
   async findOneByEmail(email :string) :Promise<IClientBD | null>{

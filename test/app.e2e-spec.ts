@@ -1,24 +1,57 @@
-import { Test, TestingModule } from '@nestjs/testing';
-import { INestApplication } from '@nestjs/common';
-import * as request from 'supertest';
-import { AppModule } from './../src/app.module';
+import { INestApplication, ValidationPipe } from "@nestjs/common"
+import { Test } from "@nestjs/testing"
+import * as session from 'express-session'
+import * as request from 'supertest'
+import { AppModule } from "../src/app.module"
+import { Request } from 'express'
 
-describe('AppController (e2e)', () => {
-  let app: INestApplication;
 
-  beforeEach(async () => {
-    const moduleFixture: TestingModule = await Test.createTestingModule({
-      imports: [AppModule],
-    }).compile();
+let app :INestApplication
+describe('ClientesController',()=>{
+  beforeAll(async ()=>{
+    const moduleREf = await Test.createTestingModule({
+      imports: [AppModule]
+    }).compile()
+    app = moduleREf.createNestApplication()
+    app.useGlobalPipes(new ValidationPipe())
+  
+  app.use(session({
+    name: 'Session-ID',
+    secret: 'dsasdadsadsadsadsadsa',
+    resave: true,
+    saveUninitialized: false,
+    cookie: {
+      maxAge: 9999999,
+      
+    },
+  }))
+   await app.init()
+  })
 
-    app = moduleFixture.createNestApplication();
-    await app.init();
-  });
-
-  it('/ (GET)', () => {
+  it('Entrada sem Authenticação', ()=>{
     return request(app.getHttpServer())
-      .get('/')
-      .expect(200)
-      .expect('Hello World!');
-  });
-});
+    .get('/clientes/dashboard').expect(401)
+   })
+  it('Não Deve Permitir criar um novo usuario já cadastrado',()=>{
+    return request(app.getHttpServer()).post('/api/clientes').send({
+      email: 'steve@gmail.com',
+      password: '123456',
+      nome: 'irineu',
+      telefone: '9999223121'
+    }).expect(403)
+  })
+  it('Não Deve Permitir criar um usuario com dados invalidos',() =>{
+    return request(app.getHttpServer()).post('/api/clientes').send({
+      email: 'ste.com',
+      password: '123456',
+      nome: 'irineu',
+      telefone: '9999223121'
+    }).expect(400)
+  })
+  it('Deve ler um Cliente',() =>{
+    return request(app.getHttpServer()).get('/api/clientes/?id=15').expect(200)
+  })
+})
+afterAll(() =>{
+  app.close()
+})

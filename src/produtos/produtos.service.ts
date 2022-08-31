@@ -1,8 +1,8 @@
 import { Injectable } from '@nestjs/common';
-import { CacheGetService } from 'src/cache/cache-get/cache-get.service';
-import { CacheNormalizeService } from 'src/cache/cache-normalize/cache-normalize.service';
-import { PostgreSqlService } from 'src/clients/postgree-service/postgree-service.service';
-import { ExceptionService } from 'src/exceptions/bad-request-exception/exception.service';
+import { CacheGetService } from '../cache/cache-get/cache-get.service'
+import { CacheNormalizeService } from '../cache/cache-normalize/cache-normalize.service'
+import { PostgreSqlService } from '../clients/postgree-service/postgree-service.service'
+import { ExceptionService } from '../exceptions/bad-request-exception/exception.service'
 import { CreateProdutoApiDto } from './dto/create-api-produto.dto';
 import { CreateProdutoDto } from './dto/create-produto.dto';
 import { UpdateApiProdutoDto } from './dto/update-api-produto.dto';
@@ -34,28 +34,36 @@ export class ProdutosService {
   }
   async createByAPI(creteProdutoApi :CreateProdutoApiDto) :Promise<ProdutoBD>{
     try{
-    const produto = await this.BD.produto.create({
+    const produto :ProdutoBD = await this.BD.produto.create({
       data:creteProdutoApi
     })
     return produto
-  }catch (error) {
+    }
+  catch (error) {
+    const mapedEro = error
+    console.log(mapedEro.message)
     if(error.code === 'P2002'){
       this.execptions.throwForbiddenException('','Produto ja cadastrado')
     }
   }
   }
- async findAll() :Promise<Array<ProdutoBD>>{
+ async findAll() :Promise<ProdutoBD[]>{
     const produtos :Array<ProdutoBD> = await this.BD.produto.findMany()
+    
     return produtos
   }
 
   async findOne(codigo :string) :Promise<ProdutoBD>{
+    try{
     const produto :ProdutoBD = await this.BD.produto.findUniqueOrThrow({
       where:{
         codigo: codigo
       }
     })
     return produto
+  }catch(error){
+   this.execptions.throwNotFoundException('',)
+  }
   }
 
  async update(updateProdutoDto: UpdateProdutoDto) :Promise<ProdutoBD>{
@@ -83,7 +91,7 @@ async updateByApi(codigo :string, updateProdutoDto :UpdateApiProdutoDto) :Promis
   })
   return produto
 }
- async remove(codigo: string) :Promise<ProdutoBD>{
+ async remove(codigo: string) :Promise<ProdutoBD | void>{
     try {
      const produtoRemovido = await this.BD.produto.delete({
         where:{
@@ -103,11 +111,15 @@ async updateByApi(codigo :string, updateProdutoDto :UpdateApiProdutoDto) :Promis
     let totalPedido :number = 0
     let arrayProdutos :Array<object>= []
     const cache = await this.cacheGet.get(id)
+    if(!cache){
+      throw new Error()
+    }
+    
     const normalizedCache = this.cacheNormalize.cacheStringToObject(cache)
     let element
     for(let i=0;i < normalizedCache.length;i++){
        element = normalizedCache[i]
-       let precoProduto = await this.BD.produto.findUnique({
+       let precoProduto = await this.BD.produto.findUniqueOrThrow({
         select:{
           preco: true
         },
@@ -116,7 +128,7 @@ async updateByApi(codigo :string, updateProdutoDto :UpdateApiProdutoDto) :Promis
         }
       })
       let {quantidade} = element
-      let {preco} = precoProduto
+      let preco = precoProduto.preco
       totalPedido = totalPedido + (preco * quantidade)
       let produto = {
         codigo: element.codigo,

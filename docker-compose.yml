@@ -3,11 +3,17 @@ services:
   postgres-compose:
     image: postgis/postgis:13-3.2
     environment:
-      POSTGRES_USER: "postgree"
-      POSTGRES_PASSWORD: "postgree"
-      POSTGRES_DB: "users"
+      POSTGRES_PASSWORD: "123"
     ports:
       - "5432:5432"
+    networks:
+      - postgres-compose-network
+  test-postgres-compose:
+    image: postgis/postgis:13-3.2
+    environment:
+      POSTGRES_PASSWORD: "123"
+    ports:
+      - "5435:5435"
     networks:
       - postgres-compose-network
   pgadmin-compose:
@@ -21,6 +27,14 @@ services:
       - postgres-compose
     networks:
       - postgres-compose-network
+  redis-compose:
+    image: redis
+    ports:
+      - "6379:6379"
+    networks: 
+      - redis-network-compose
 networks: 
   postgres-compose-network:
+    driver: bridge
+  redis-network-compose:
     driver: bridge

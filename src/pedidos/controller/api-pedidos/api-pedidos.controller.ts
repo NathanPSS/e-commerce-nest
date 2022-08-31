@@ -1,10 +1,10 @@
 import { Body, Controller, Delete, Get, Param, ParseIntPipe, Patch, Post } from '@nestjs/common';
 import { ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
-import { NotFoundSwagger } from 'src/helpers/swagger/NotFoundRequestSwagger';
-import { CreatePedidoApiDto } from 'src/pedidos/dto/CreatePedidoDto';
-import { UpdatePedidoApiDto } from 'src/pedidos/dto/UpdatePedidoDto';
-import { IPedidoBD } from 'src/pedidos/entities/IPedidoBD.entity';
-import { PedidosService } from 'src/pedidos/pedidos.service';
+import { NotFoundSwagger } from '../../../helpers/swagger/NotFoundRequestSwagger';
+import { CreatePedidoApiDto } from '../../dto/CreatePedidoDto';
+import { UpdatePedidoApiDto } from '../../dto/UpdatePedidoDto';
+import { IPedidoBD } from '../../entities/IPedidoBD.entity';
+import { PedidosService } from '../../pedidos.service';
 
 
 @ApiTags('Api-Pedidos')

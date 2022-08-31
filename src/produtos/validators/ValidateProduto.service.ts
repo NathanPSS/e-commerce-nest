@@ -1,5 +1,5 @@
 import { Injectable } from "@nestjs/common";
-import { PostgreSqlService } from "src/clients/postgree-service/postgree-service.service";
+import { PostgreSqlService } from '../../clients/postgree-service/postgree-service.service';
 
 
 @Injectable()

@@ -3,7 +3,7 @@ import Redis from "ioredis";
 export class RedisClient {
     constructor(
         protected readonly client = new Redis({
-            host: "172.19.0.2",
+            host: "0.0.0.0",
             port: 6379
         }
     )){}

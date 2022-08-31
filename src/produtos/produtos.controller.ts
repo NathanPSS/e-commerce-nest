@@ -2,13 +2,13 @@ import { Controller, Get, Post, Body, Patch, Param, Delete, UseGuards, Res, Req,
 import { ProdutosService } from './produtos.service';
 import { CreateProdutoDto } from './dto/create-produto.dto';
 import { UpdateProdutoDto } from './dto/update-produto.dto';
-import { CheckAdminAuthenticationGuard } from 'src/admin/auth-admin/guards/check-admin.guard';
+import { CheckAdminAuthenticationGuard } from '../admin/auth-admin/guards/check-admin.guard';
 import { ApiBasicAuth, ApiOkResponse, ApiOperation, ApiResponse, ApiTags } from '@nestjs/swagger';
 import { ProdutoBD, ProdutoId } from './entities/IProduto.entity';
-import { UnauthorizedRequestSwagger } from 'src/helpers/swagger/UnthorizadedSwagger';
-import { NotFoundSwagger } from 'src/helpers/swagger/NotFoundRequestSwagger';
+import { UnauthorizedRequestSwagger } from '../helpers/swagger/UnthorizadedSwagger';
+import { NotFoundSwagger } from '../helpers/swagger/NotFoundRequestSwagger';
 import { Response } from 'express';
-import { AdminService } from 'src/admin/admin.service';
+import { AdminService } from '../admin/admin.service';
 import { urlToHttpOptions } from 'url';
 
 @ApiTags('Admin-Produtos')

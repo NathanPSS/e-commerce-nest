@@ -19,7 +19,7 @@ export class CacheSetService extends RedisClient{
           await this.client.set(key,value,'EX',ttl)
     }
 
-    async exitsCache(key :RedisKey) :Promise<string>{
+    async exitsCache(key :RedisKey) :Promise<string | null>{
          const cache = await this.cacheGet.get(key)
          return cache
     }
