@@ -16,7 +16,9 @@ Crie um novo server clicando com o botão direito na icom server
 Name : Postgres
 Host name/addres : e-commerce-postgres-compose-1 caso não funcione procure o nome do container com a porta 5432 e o substitua  
 Username: postgres  
-Password: 123
+Password: 123  
+
+yarn install para baixar as dependencias
 
 ##### Criando as Tabelas
 Com as dependencias já baixas ultilize npx prisma migrate dev para rodar as migrations no banco
