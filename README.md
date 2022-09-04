@@ -14,11 +14,9 @@ Password: postgree
 Crie um novo server clicando com o botão direito na icom server
 
 Name : Postgres
-Host name/addres : e-commerce-postgres-compose-1 caso não funcione procure o nome do container com a porta 5432 e o substitua  
-Username: postgres  
-Password: 123  
-
-yarn install para baixar as dependencias
+Host name/addres : e-commerce-postgres-compose-1 caso não funcione procure o nome do container com a porta 5432 e o substitua
+Username: postgres
+Password: 123
 
 ##### Criando as Tabelas
 Com as dependencias já baixas ultilize npx prisma migrate dev para rodar as migrations no banco
@@ -43,4 +41,4 @@ yarn test
 ###### Pois o os Testes irão ler diretamente no BD 
 
 ###### Comando
-yarn test:e2e
+ yarn jest --config ./test/jest-e2e.json
