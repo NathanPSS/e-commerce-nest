@@ -91,7 +91,7 @@ async updateByApi(codigo :string, updateProdutoDto :UpdateApiProdutoDto) :Promis
   })
   return produto
 }
- async remove(codigo: string) :Promise<ProdutoBD | void>{
+ async remove(codigo: string) :Promise<ProdutoBD>{
     try {
      const produtoRemovido = await this.BD.produto.delete({
         where:{

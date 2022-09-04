@@ -36,8 +36,22 @@ let produtosBD :Array<ProdutoBD> = [
     updateAt: new Date('2022-08-25 10:14:26.823')
   }
 ]
-
-
+const dto :CreateProdutoApiDto = {
+  codigo:'1111',
+  nome:'test',
+  descricao:'test',
+  preco:1,
+  quantidade:1,
+  tipo:'test'
+}
+const updatedDto :CreateProdutoApiDto = {
+  codigo:'1112',
+  nome:'test1',
+  descricao:'test1',
+  preco:1,
+  quantidade:1,
+  tipo:'test'
+}
 describe('ProdutosService', () => {
   let produtoService: ProdutosService;
   let prisma :PostgreSqlService
@@ -69,60 +83,66 @@ describe('ProdutosService', () => {
   it('should be defined', () => {
     expect(produtoService).toBeDefined();
   });
-  describe('findOne', () =>{
+  describe('CRUD dos Produtos', () =>{
+    it('Criar um produto',async () => {
+      const data = await produtoService.createByAPI(dto)
+    const result = {
+      codigo: data.codigo,
+      nome:data.nome,
+      descricao:data.descricao,
+      preco:data.preco,
+      quantidade:data.quantidade,
+      tipo:data.tipo,
+    }
+      expect(result).toEqual(dto)
+    })
     it('Retornar um produto',async () => {
-      prisma.produto.findUniqueOrThrow = jest.fn().mockResolvedValueOnce(produtosBD[0])
-      const result = await produtoService.findOne('1')
-      expect(result).toEqual(produtosBD[0])
+      const data = await produtoService.findOne('1111')
+      const result = {
+        codigo: data.codigo,
+        nome:data.nome,
+        descricao:data.descricao,
+        preco:data.preco,
+        quantidade:data.quantidade,
+        tipo:data.tipo,
+      }
+      expect(result).toEqual(dto)
     })
     it('Error ao tentar retornar o produto',async () =>{
-      jest.spyOn(prisma.produto,'findUniqueOrThrow').mockRejectedValueOnce(new Error())
-   await expect(produtoService.findOne('1')).rejects.toThrowError()
+   await expect(produtoService.findOne('999999999999999999')).rejects.toThrowError()
     })
   });
-  describe('create',()=>{
-    it('Criar um produto',async () => {
-      prisma.produto.create = jest.fn().mockResolvedValueOnce(produtosBD[0])
-      const dto :CreateProdutoApiDto = {
-        codigo:'1111',
-        nome:'test',
-        descricao:'test',
-        preco:1,
-        quantidade:1,
-        tipo:'test'
-      }
-      const result = await produtoService.createByAPI(dto)
-      expect(result).toEqual(produtosBD[0])
-    })
-  }),
   describe('findAll', ()=>{
     it('Retorna uma Lista de Produtos',async () => {
-      prisma.produto.findMany = jest.fn().mockResolvedValueOnce(produtosBD)
-      const result =  produtoService.findAll()
-      expect(result).resolves.toEqual(produtosBD)
+      const result =  await produtoService.findAll()
+      expect(result).toBeInstanceOf(Array<ProdutoBD>)
 
     })
     }),
+    it('Deve retornar o produto atualizado',async () => {
+      const data = await produtoService.updateByApi(dto.codigo,updatedDto)
+      const result = {
+        codigo: data.codigo,
+        nome:data.nome,
+        descricao:data.descricao,
+        preco:data.preco,
+        quantidade:data.quantidade,
+        tipo:data.tipo,
+      }
+     expect(result).toEqual(updatedDto)
+    })
     describe('delete', () =>{
       it('Deve Retornar um produto deletado',async () => {
-        prisma.produto.delete = jest.fn().mockResolvedValueOnce(produtosBD[0])
-        const result = produtoService.remove('1')
-        expect(result).resolves.toEqual(produtosBD[0])
-      })
-    }),
-    describe('update', () =>{
-      const codigo = '2'
-      const updateDto :UpdateApiProdutoDto = {
-        codigo: '2',
-        quantidade: 1,
-        nome:'test',
-        descricao:'test',
-        preco:1,
-      }
-      it('Deve retornar o produto atualizado',async () => {
-        prisma.produto.update = jest.fn().mockResolvedValueOnce(produtosBD[0])
-        const result = produtoService.updateByApi(codigo,updateDto)
-       await expect(result).resolves.toEqual(produtosBD[0])
+        const data = await produtoService.remove('1112')
+        const result = {
+          codigo: data.codigo,
+          nome:data.nome,
+          descricao:data.descricao,
+          preco:data.preco,
+          quantidade:data.quantidade,
+          tipo:data.tipo,
+        }
+        expect(result).toEqual(updatedDto)
       })
     })
   })

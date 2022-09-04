@@ -8,6 +8,7 @@ import { ExceptionService } from '../exceptions/bad-request-exception/exception.
 import { ClientesService } from './clientes.service';
 import { ConfigService } from '@nestjs/config';
 import { IClientBD } from './entities/iClientBD.entity';
+import { CreateClienteDto } from './dto/create-cliente.dto';
 
 let clientes :IClientBD[] = [
   {
@@ -29,8 +30,17 @@ let clientes :IClientBD[] = [
    updateAt: new Date('2022-08-25 13:07:51.711'),
   }
 ]
-
-
+const dto :CreateClienteDto= {
+  email: 'teste@gmail.com',
+  password: '123456',
+  nome: 'teste',
+  telefone: '999982222',
+}
+const dtoExpect = {
+  email: 'teste@gmail.com',
+  nome: 'teste',
+  telefone: '999982222',
+}
 describe('ClientesService', () => {
   let clienteService: ClientesService;
   let prisma :PostgreSqlService
@@ -38,13 +48,7 @@ describe('ClientesService', () => {
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
-      providers: [ClientesService,PostgreSqlService,ConfigService,ExceptionService,
-       {
-        provide: HashDataService,
-        useValue:{
-         hashData: jest.fn()
-        }
-       },
+      providers: [ClientesService,PostgreSqlService,ConfigService,ExceptionService,HashDataService
       ],
     }).compile();
     exceptions = module.get<ExceptionService>(ExceptionService),
@@ -57,25 +61,38 @@ describe('ClientesService', () => {
     expect(clienteService).toBeDefined();
   });
    describe('create',()=>{
-  const dto = {
-    email: 'irineia@gmail.com',
-    password: '123456',
-    nome: 'irineia',
-    telefone: '982222',
-  }
-    it('Retornar um cliente',async () => {
-        prisma.cliente.create = jest.fn().mockResolvedValueOnce(clientes[0])
-
-        const result = clienteService.create(dto)
-        expect(result).resolves.toEqual(clientes[0])
+    it('Criar um Cliente',async () => {
+      const data = await clienteService.create(dto)
+      const result= {
+        email: data.email,
+        nome: data.nome,
+        telefone: data.telefone
+      }
+      expect(result).toEqual(dtoExpect)
     })
    })
    describe('findOne', ()=>{
     it('Retornar um cliente',async () => {
-        const id = 1
-        jest.spyOn(prisma.cliente,'findUnique').mockResolvedValueOnce(clientes[0])
-        const result = clienteService.findOneById(id)
-        expect(result).resolves.toEqual(clientes[0])
+      const email = 'teste@gmail.com'
+        const data = await clienteService.findOneByEmail(email)
+        const result= {
+          email: data.email,
+          nome: data.nome,
+          telefone: data.telefone
+        }
+        expect(result).toEqual(dtoExpect)
+    })
+   })
+   describe('deletar um cliente', () =>{
+    it('Deletar um cliente', async () => {
+      const email = 'teste@gmail.com'
+      const data = await clienteService.removeByEmail(email)
+      const result= {
+        email: data.email,
+        nome: data.nome,
+        telefone: data.telefone
+      }
+      expect(result).toEqual(dtoExpect)
     })
    })
   })

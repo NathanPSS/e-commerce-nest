@@ -1,4 +1,5 @@
 import { Injectable } from '@nestjs/common';
+
 import { PostgreSqlService } from '../clients/postgree-service/postgree-service.service';
 import { ExceptionService } from '../exceptions/bad-request-exception/exception.service'
 import { HashDataService } from '../hash/hash-data/hash-data.service'
@@ -27,6 +28,7 @@ try{
         password: hashedPassword
       }
     })
+
     return userCreated
   } catch (error){
     if(error.code == 'P2002'){
@@ -85,4 +87,13 @@ try{
     })
     return removedCliente
   }
+
+ async removeByEmail(emai: string) :Promise<IClientBD>{
+  const removedCliente = await this.BD.cliente.delete({
+    where:{
+      email: emai
+    }
+  })
+  return removedCliente
+}
 }
